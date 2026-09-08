@@ -9,6 +9,27 @@ import wishlistReducer, {
 } from "./wishListReducer.js";
 import { configureStore } from "@reduxjs/toolkit";
 
+function logger(store) {
+  return function (next) {
+    return function (action) {
+      console.log(store);
+      console.log(next);
+      console.log(action);
+      next(action);
+    };
+  };
+}
+
+function authenticate(store) {
+  return function (next) {
+    return function (action) {
+      console.log("auth : ", store);
+      console.log("auth : ", next);
+      console.log("auth : ", action);
+      next(action);
+    };
+  };
+}
 //using rtk way to create store
 const store = configureStore({
   reducer: {
@@ -16,6 +37,7 @@ const store = configureStore({
     cartItems: cartReducer,
     wishlist: wishlistReducer,
   },
+  middleware: () => [logger, authenticate],
 });
 
 // using redux way to create store
